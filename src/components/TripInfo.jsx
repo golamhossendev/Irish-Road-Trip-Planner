@@ -29,7 +29,6 @@ const TripInfo = ({ tripData }) => {
 
     const currentDest = destination ? baseCoords[destination.name] : baseCoords['Galway'];
 
-    console.log(currentDest,"<<<<<<<currentDest");
     
   // Calculate estimated costs
   const fuelCost = (distance / 100 * 8.5 * 1.6).toFixed(2); // Assuming 8.5L/100km and €1.60/L
@@ -37,7 +36,7 @@ const TripInfo = ({ tripData }) => {
   console.log(tripData,"tripData");
 
   return (
-    <div className="card max-w-4xl mx-auto">
+    <div className="card max-w-full mx-auto">
       <div className="mb-6">
         <div className="flex items-center justify-between">
           <div>

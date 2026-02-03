@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import SearchBar from '../components/SearchBar';
-import TripInfo from '../components/TripInfo';
-import RouteMap from '../components/RouteMap';
-import { Download, Share2, Printer, Save } from 'lucide-react';
+import React, { useState } from "react";
+import SearchBar from "../components/SearchBar";
+import TripInfo from "../components/TripInfo";
+import RouteMap from "../components/RouteMap";
+import { Download, Share2, Printer, Save } from "lucide-react";
 
 const TripPlanner = () => {
   const [currentTrip, setCurrentTrip] = useState(null);
@@ -12,46 +12,68 @@ const TripPlanner = () => {
   const generateMockTripData = (destination) => {
     // Calculate fake distance based on destination name
     const distanceMap = {
-      'Dublin': 0,
-      'Galway': 208,
-      'Cork': 253,
-      'Belfast': 167,
-      'Cliffs of Moher': 265,
-      'Ring of Kerry': 115,
-      'Giants Causeway': 95,
-      'Dingle Peninsula': 320,
+      Dublin: 0,
+      Galway: 208,
+      Cork: 253,
+      Belfast: 167,
+      "Cliffs of Moher": 265,
+      "Ring of Kerry": 115,
+      "Giants Causeway": 95,
+      "Dingle Peninsula": 320,
     };
 
-    const distance = distanceMap[destination.name] || Math.floor(Math.random() * 300) + 100;
+    const distance =
+      distanceMap[destination.name] || Math.floor(Math.random() * 300) + 100;
     const hours = Math.floor(distance / 80);
     const minutes = Math.floor((distance % 80) / 1.33);
     const duration = `${hours}h ${minutes}m`;
 
     // Mock weather data
-    const weatherConditions = ['Sunny', 'Cloudy', 'Rainy', 'Windy', 'Foggy'];
-    const randomCondition = weatherConditions[Math.floor(Math.random() * weatherConditions.length)];
+    const weatherConditions = ["Sunny", "Cloudy", "Rainy", "Windy", "Foggy"];
+    const randomCondition =
+      weatherConditions[Math.floor(Math.random() * weatherConditions.length)];
 
     // Mock essentials based on destination
     const essentialsMap = {
-      'Galway': ['Waterproof jacket', 'Comfortable walking shoes', 'Camera', 'Irish phrasebook'],
-      'Cliffs of Moher': ['Warm layers', 'Sturdy footwear', 'Binoculars', 'Windbreaker'],
-      'Ring of Kerry': ['Full tank of fuel', 'Picnic supplies', 'Swimwear', 'Hiking gear'],
-      'Dingle Peninsula': ['Sea sickness tablets', 'Waterproof bag', 'Snorkel gear', 'Local map'],
+      Galway: [
+        "Waterproof jacket",
+        "Comfortable walking shoes",
+        "Camera",
+        "Irish phrasebook",
+      ],
+      "Cliffs of Moher": [
+        "Warm layers",
+        "Sturdy footwear",
+        "Binoculars",
+        "Windbreaker",
+      ],
+      "Ring of Kerry": [
+        "Full tank of fuel",
+        "Picnic supplies",
+        "Swimwear",
+        "Hiking gear",
+      ],
+      "Dingle Peninsula": [
+        "Sea sickness tablets",
+        "Waterproof bag",
+        "Snorkel gear",
+        "Local map",
+      ],
     };
 
     const essentials = essentialsMap[destination.name] || [
-      'Waterproof clothing',
-      'Power bank',
-      'Snacks',
-      'First aid kit',
-      'Road map'
+      "Waterproof clothing",
+      "Power bank",
+      "Snacks",
+      "First aid kit",
+      "Road map",
     ];
 
     // Add weather-specific items
-    if (randomCondition === 'Rainy') {
-      essentials.push('Umbrella', 'Waterproof shoes');
-    } else if (randomCondition === 'Sunny') {
-      essentials.push('Sunscreen', 'Sunglasses', 'Hat');
+    if (randomCondition === "Rainy") {
+      essentials.push("Umbrella", "Waterproof shoes");
+    } else if (randomCondition === "Sunny") {
+      essentials.push("Sunscreen", "Sunglasses", "Hat");
     }
 
     return {
@@ -65,9 +87,10 @@ const TripPlanner = () => {
         wind: Math.floor(Math.random() * 40) + 10, // 10-50 km/h
       },
       fuelEstimate: `${(distance / 15).toFixed(1)} liters`, // Assuming 15km/L
-      roadConditions: distance > 200 ? 
-        "Some mountain roads may be narrow. Drive carefully in rural areas." : 
-        "Main roads in good condition. Watch for local traffic.",
+      roadConditions:
+        distance > 200
+          ? "Some mountain roads may be narrow. Drive carefully in rural areas."
+          : "Main roads in good condition. Watch for local traffic.",
       essentials: essentials,
     };
   };
@@ -78,14 +101,18 @@ const TripPlanner = () => {
     setTimeout(() => {
       const mockDestination = {
         name: query,
-        region: query.includes('Cliffs') ? 'Clare' : 
-                query.includes('Ring') ? 'Kerry' : 
-                query.includes('Giants') ? 'Antrim' : 
-                query.includes('Dingle') ? 'Kerry' : 
-                'Various',
-        description: 'Beautiful Irish destination'
+        region: query.includes("Cliffs")
+          ? "Clare"
+          : query.includes("Ring")
+            ? "Kerry"
+            : query.includes("Giants")
+              ? "Antrim"
+              : query.includes("Dingle")
+                ? "Kerry"
+                : "Various",
+        description: "Beautiful Irish destination",
       };
-      
+
       const tripData = generateMockTripData(mockDestination);
       setCurrentTrip(tripData);
       setIsLoading(false);
@@ -101,17 +128,41 @@ const TripPlanner = () => {
     }, 1000);
   };
 
-  const handleExportPDF = () => {
-    alert('PDF export feature would be implemented here!');
+
+  const handleSaveTrip = async (currentTrip) => {
+  const token = localStorage.getItem('token');
+
+  const tripData = {
+    title: currentTrip.destination.name,
+    distance: currentTrip.distance,
+    duration: currentTrip.duration,
+    temperature: currentTrip.weather.temp,
+    condition: currentTrip.weather.condition,
+    fuel: currentTrip.fuelEstimate,
+    essentials: currentTrip.essentials
   };
 
-  const handleShareTrip = () => {
-    alert('Share feature would be implemented here!');
-  };
+  try {
+    const res = await fetch('http://localhost:3000/api/trips/save', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-auth-token': token
+      },
+      body: JSON.stringify(tripData)
+    });
 
-  const handleSaveTrip = () => {
-    alert('Trip saved to your account!');
-  };
+    const data = await res.json();
+    if (res.ok) {
+      alert("Trip saved successfully!");
+    } else {
+      console.error("Save failed:", data.error);
+    }
+  } catch (err) {
+    console.error("Network error:", err);
+  }
+};
+
 
   return (
     <div className="py-8">
@@ -122,15 +173,16 @@ const TripPlanner = () => {
             Plan Your Irish Road Trip
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Any destination can be searched in Ireland and a full travel arrangement is provided including distance. 
-            weather, prices, and all you should know.
+            Any destination can be searched in Ireland and a full travel
+            arrangement is provided including distance. weather, prices, and all
+            you should know.
           </p>
         </div>
 
         {/* Search Section */}
         <div className="mb-12">
-          <SearchBar 
-            onSearch={handleSearch} 
+          <SearchBar
+            onSearch={handleSearch}
             onLocationSelect={handleLocationSelect}
           />
         </div>
@@ -139,8 +191,12 @@ const TripPlanner = () => {
         {isLoading && (
           <div className="text-center py-12">
             <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-ireland-green mb-4"></div>
-            <h3 className="text-xl font-semibold text-gray-700">Planning your Irish adventure...</h3>
-            <p className="text-gray-600">Calculating routes and checking weather conditions</p>
+            <h3 className="text-xl font-semibold text-gray-700">
+              Planning your Irish adventure...
+            </h3>
+            <p className="text-gray-600">
+              Calculating routes and checking weather conditions
+            </p>
           </div>
         )}
 
@@ -149,28 +205,14 @@ const TripPlanner = () => {
           <>
             {/* Action Buttons */}
             <div className="flex flex-wrap justify-center gap-4 mb-8">
-              <button 
-                onClick={handleSaveTrip}
+              <button
+           onClick={() => handleSaveTrip(currentTrip)}
                 className="flex items-center space-x-2 btn-primary"
               >
                 <Save className="h-5 w-5" />
                 <span>Save Trip</span>
               </button>
-              <button 
-                onClick={handleExportPDF}
-                className="flex items-center space-x-2 bg-white border border-gray-300 hover:bg-gray-50 text-gray-800 font-semibold py-2 px-4 rounded-lg transition"
-              >
-                <Download className="h-5 w-5" />
-                <span>Export PDF</span>
-              </button>
-              <button 
-                onClick={handleShareTrip}
-                className="flex items-center space-x-2 bg-white border border-gray-300 hover:bg-gray-50 text-gray-800 font-semibold py-2 px-4 rounded-lg transition"
-              >
-                <Share2 className="h-5 w-5" />
-                <span>Share</span>
-              </button>
-              <button 
+              <button
                 onClick={() => window.print()}
                 className="flex items-center space-x-2 bg-white border border-gray-300 hover:bg-gray-50 text-gray-800 font-semibold py-2 px-4 rounded-lg transition"
               >
@@ -182,7 +224,10 @@ const TripPlanner = () => {
             {/* Trip Content */}
             <div className="space-y-8">
               <TripInfo tripData={currentTrip} />
-              <RouteMap route={currentTrip} destination={currentTrip.destination} />
+              <RouteMap
+                route={currentTrip}
+                destination={currentTrip.destination}
+              />
             </div>
           </>
         )}

@@ -59,7 +59,7 @@ const WeatherApp = () => {
           <form onSubmit={handleSearch} className="relative w-full md:w-96">
             <input
               type="text"
-              placeholder="Search city (e.g. Tokyo, New York)..."
+              placeholder="Search city (e.g. Ireland, Cork,dublin)..."
               className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
               value={input}
               onChange={(e) => setInput(e.target.value)}

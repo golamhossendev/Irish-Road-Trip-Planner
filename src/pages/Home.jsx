@@ -42,6 +42,8 @@ const Home = () => {
     { from: "Dublin", to: "Cliffs of Moher", duration: "3h 21m", distance: "261.5 km" },
   ];
 
+   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+
   return (
     <div>
       {/* Hero Section */}
@@ -53,7 +55,7 @@ const Home = () => {
           <p className="text-xl mb-8 max-w-2xl mx-auto">
            Our smart planner will help you plan the ideal Irish road trip. Wild Atlantic Way to old castles and everything in between.
           </p>
-          <Link to="/plan">
+          <Link to={isLoggedIn ? "/plan": "/login"}>
             <button className="bg-white text-ireland-green hover:bg-gray-100 font-bold py-4 px-8 rounded-full text-lg transition duration-300 shadow-xl">
               Start Planning Your Adventure →
             </button>
@@ -107,7 +109,7 @@ const Home = () => {
                     <span className="font-semibold">{trip.distance}</span>
                   </div>
                 </div>
-                <Link to="/plan">
+                <Link to={isLoggedIn ? "/plan": "/login"}>
                   <button className="w-full mt-4 btn-primary text-sm">
                     Plan This Route
                   </button>
@@ -145,7 +147,7 @@ const Home = () => {
           <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
             Join thousands of travelers who've discovered Ireland's hidden gems with our planner.
           </p>
-          <Link to="/plan">
+          <Link to={isLoggedIn ? "/plan": "/login"}>
             <button className="bg-gradient-to-r from-ireland-green to-celtic-blue hover:opacity-90 text-white font-bold py-4 px-8 rounded-full text-lg transition duration-300 shadow-lg">
               Create Your Free Trip Plan Now
             </button>
