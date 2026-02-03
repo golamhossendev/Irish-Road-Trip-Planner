@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, Navigation, Cloud, Fuel, Sunrise } from 'lucide-react';
+import { MapPin, Navigation, Cloud, Fuel, Sunrise, Search, ChartBarIncreasing, Van } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Navbar = () => {
@@ -21,12 +21,16 @@ const Navbar = () => {
               <span>Home</span>
             </Link>
             <Link to="/plan" className="hover:text-ireland-orange transition flex items-center space-x-2">
-              <Cloud className="h-5 w-5" />
+              <Van className="h-5 w-5" />
               <span>Plan Trip</span>
             </Link>
             <Link to="/weather" className="hover:text-ireland-orange transition flex items-center space-x-2">
-              <Sunrise className="h-5 w-5" />
+              <Cloud className="h-5 w-5" />
               <span>Weather</span>
+            </Link>
+            <Link to="/progress" className="hover:text-ireland-orange transition flex items-center space-x-2">
+              <ChartBarIncreasing className="h-5 w-5" />
+              <span>progress</span>
             </Link>
           </div>
         </div>

@@ -5,6 +5,7 @@ import TripPlanner from './pages/TripPlanner';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import WeatherApp from './pages/WeatherApp';
+import Progress from './pages/Progress';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/plan" element={<TripPlanner />} />
             <Route path="/weather" element={<WeatherApp />} />
+            <Route path="/progress" element={<Progress />} />
           </Routes>
         </main>
         <Footer />
