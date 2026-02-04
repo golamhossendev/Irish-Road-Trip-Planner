@@ -210,7 +210,7 @@ const TripPlanner = () => {
                 className="flex items-center space-x-2 btn-primary"
               >
                 <Save className="h-5 w-5" />
-                <span>Save Trip</span>
+                {isLoading ? <span>loading</span> : <span>Save Trip</span>}
               </button>
               <button
                 onClick={() => window.print()}

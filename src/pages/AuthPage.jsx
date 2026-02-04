@@ -32,15 +32,19 @@ const AuthPage = () => {
 
       if (response.ok) {
         if (data.token) {
-          localStorage.setItem("token", data.token);
-        }
-        // 1. Save auth state (and token if your API provides one)
-        localStorage.setItem("isLoggedIn", "true");
-        localStorage.setItem("userEmail", data.email);
-        
-        // 2. Redirect to Progress or Home
-        navigate('/progress');
-        window.location.reload(); // Refresh to update Navbar state
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("isLoggedIn", "true");
+    localStorage.setItem("userEmail", data.email || formData.email);
+    
+    navigate('/progress');
+    window.location.reload(); 
+  } else {
+    // If response is OK but no token (e.g., "Check your email to verify")
+    alert("Account created, but no session token received. Please log in.");
+     navigate('/login');
+    window.location.reload();
+    // Optionally: setIsLogin(true); // Switch them to login view instead of redirecting
+  }
       } else {
         alert(data.message || "Authentication failed");
       }
